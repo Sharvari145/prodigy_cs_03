@@ -1,0 +1,63 @@
+import re
+
+def check_password_strength(password):
+    strength = 0
+    feedback = []
+
+    # Criteria
+    length_error = len(password) < 8
+    upper_error = re.search(r"[A-Z]", password) is None
+    lower_error = re.search(r"[a-z]", password) is None
+    digit_error = re.search(r"[0-9]", password) is None
+    special_error = re.search(r"[!@#$%^&*(),.?\":{}|<>]", password) is None
+
+    # Checking each criteria
+    if not length_error:
+        strength += 1
+    else:
+        feedback.append("Password should be at least 8 characters long.")
+
+    if not upper_error:
+        strength += 1
+    else:
+        feedback.append("Add at least one uppercase letter.")
+
+    if not lower_error:
+        strength += 1
+    else:
+        feedback.append("Add at least one lowercase letter.")
+
+    if not digit_error:
+        strength += 1
+    else:
+        feedback.append("Include at least one number.")
+
+    if not special_error:
+        strength += 1
+    else:
+        feedback.append("Include at least one special character.")
+
+    # Strength rating
+    if strength == 5:
+        rating = "Very Strong"
+    elif strength == 4:
+        rating = "Strong"
+    elif strength == 3:
+        rating = "Moderate"
+    elif strength == 2:
+        rating = "Weak"
+    else:
+        rating = "Very Weak"
+
+    return rating, feedback
+
+# Example usage
+if __name__ == "__main__":
+    user_password = input("Enter a password to check its strength: ")
+    rating, feedback = check_password_strength(user_password)
+
+    print(f"\nPassword Strength: {rating}")
+    if feedback:
+        print("Suggestions to improve your password:")
+        for tip in feedback:
+            print(f"- {tip}")
